@@ -1,7 +1,8 @@
 // Servicio API - Cliente HTTP para consumir microservicios
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { MS_AUTH_URL, MS_USER_URL } from '../config';
+import { MS_AUTH_URL, MS_USER_URL, MS_PRODUCT_URL } from '../config';
+
 // Crear instancia de axios
 const api = axios.create({
   timeout: 120000,
@@ -117,3 +118,24 @@ export const userService = {
 };
 
 export default api;
+
+// ============================================================================
+// PRODUCT SERVICE
+// ============================================================================
+
+export const productService = {
+  // Agregar parámetros opcionales name y category
+  getProducts: (name = "", category = "") => {
+    return api.get(`${MS_PRODUCT_URL}/product/`, {
+      params: {
+        name,      // se convierte en ?name=...
+        category   // se convierte en &category=...
+      }
+    });
+  },
+
+  createProduct: (data) => api.post(`${MS_PRODUCT_URL}/product/`, data),
+
+  updateProduct: (id, data) => api.put(`${MS_PRODUCT_URL}/product/${id}`, data),
+};
+

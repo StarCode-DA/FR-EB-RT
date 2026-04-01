@@ -16,6 +16,7 @@ function NavbarComponent() {
         <Navbar.Brand as={Link} to={"/home"} className="fw-bold text-warning fs-4">
           <img src="/luna.png" alt="luna" width={50} className="align-middle" /> Eclipse Bar
         </Navbar.Brand>
+
         <Nav className="me-auto">
           {hasPermission('home.view') && (
             <Nav.Link as={Link} to="/home" className="text-white fw-semibold">Home</Nav.Link>
@@ -41,6 +42,15 @@ function NavbarComponent() {
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
+
+        {/*  LOGOUT */}
+        {token && (
+          <Nav>
+            <Nav.Link onClick={logout} className="text-warning fw-semibold">
+              Log Out
+            </Nav.Link>
+          </Nav>
+        )}
       </Container>
     </Navbar>
   );

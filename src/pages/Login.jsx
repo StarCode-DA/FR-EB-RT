@@ -32,6 +32,7 @@ function Login() {
                 type="email"
                 className="form-control mb-3"
                 placeholder="Email"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
@@ -39,18 +40,24 @@ function Login() {
                 type="password"
                 className="form-control mb-3"
                 placeholder="Password"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button type="button" className="btn btn-warning w-100" onClick={handleLogin}>
                 Sign In
               </button>
+
               <p className="text-center mt-3">
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate("/forgot-password"); }} className="text-warning" style={{ fontSize: "0.85rem", textDecoration: "none" }}>
                   Forgot Password?
-                </a>
-                {" "}
-                <span className="text-warning fw-bold" style={{ fontSize: "0.85rem" }}>Click here</span>
+                </a>{" "}
+                <span
+                  className="text-warning fw-bold"
+                  style={{ fontSize: "0.85rem" }}
+                >
+                  Click here
+                </span>
               </p>
               {error && <p className="text-danger text-center mt-2" style={{ fontSize: "0.85rem" }}>{error}</p>}
             </form>
