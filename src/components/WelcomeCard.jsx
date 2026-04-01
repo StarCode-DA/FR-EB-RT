@@ -9,8 +9,7 @@ function WelcomeCard() {
             Welcome to Eclipse Bar
           </Card.Title>
           <Card.Text className="text-white fs-5 fw-semibold">
-            Connect with your loved ones, 
-            share the flavor and live the experience where day and night meet.
+            Connect with your loved ones, share the flavor and live the experience where day and night meet.
           </Card.Text>
           <img src="/brindis.png" alt="brindis" width={180} className="align-middle" />
         </Card.Body>

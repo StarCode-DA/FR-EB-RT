@@ -1,10 +1,7 @@
-/**
- * Servicio API - Cliente HTTP para consumir microservicios
- */
+// Servicio API - Cliente HTTP para consumir microservicios
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { MS_AUTH_URL } from '../config';
-
+import { MS_AUTH_URL, MS_USER_URL } from '../config';
 // Crear instancia de axios
 const api = axios.create({
   timeout: 120000,
@@ -12,7 +9,6 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
-
 // Interceptor para agregar token JWT a todas las peticiones
 api.interceptors.request.use(
   (config) => {
@@ -26,7 +22,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 // Interceptor para manejar errores de respuesta
 api.interceptors.response.use(
   (response) => response,
@@ -40,8 +35,8 @@ api.interceptors.response.use(
       }
     } else if (error.response?.status === 502 || error.response?.status === 504) {
       // Error de Gateway (Backend no disponible)
-      console.error('❌ Error de Gateway:', error.response.status);
-      const errorMessage = '⚠️ El servidor no responde. Por favor verifica tu conexión o intenta más tarde.';
+      console.error('❌ Gateway Error:', error.response.status);
+      const errorMessage = '⚠️ The server is not responding. Please check your connection or try again later.';
       error.message = errorMessage;
       // Mostrar toast de error (evitar duplicados verificando si ya existe uno)
       if (!document.querySelector('.Toastify__toast--error')) {
@@ -52,8 +47,8 @@ api.interceptors.response.use(
       }
     } else if (!error.response) {
       // Error de red (sin respuesta del servidor)
-      console.error('❌ Error de red:', error.message);
-      const errorMessage = '⚠️ Error de conexión. Por favor verifica tu conexión a internet.';
+      console.error('❌ Network error:', error.message);
+      const errorMessage = '⚠️ Connection error. Please check your internet connection.';
       error.message = errorMessage;
       if (!document.querySelector('.Toastify__toast--error')) {
         toast.error(errorMessage, {
@@ -69,7 +64,6 @@ api.interceptors.response.use(
 // ============================================================================
 // AUTH SERVICE
 // ============================================================================
-
 export const authService = {
   login: async (email, password) => {
     const response = await api.post(`${MS_AUTH_URL}/login`, {
@@ -90,6 +84,36 @@ export const authService = {
     return response.data;
   },
 
+};
+
+// ============================================================================
+// USER SERVICE
+// ============================================================================
+export const userService = {
+  crearUsuario: async (data) => {
+    const response = await api.post(`${MS_USER_URL}/`, data);
+    return response.data;
+  },
+
+  listarUsuarios: async () => {
+    const response = await api.get(`${MS_USER_URL}/`);
+    return response.data;
+  },
+
+  cambiarPassword: async (nueva_password) => {
+    const response = await api.patch(`${MS_USER_URL}/cambiar-password`, { nueva_password });
+    return response.data;
+  },
+
+  actualizarUsuario: async (id, data) => {
+    const response = await api.put(`${MS_USER_URL}/${id}`, data);
+    return response.data;
+  },
+
+  toggleActivo: async (id) => {
+    const response = await api.patch(`${MS_USER_URL}/${id}/toggle-activo`);
+    return response.data;
+  }
 };
 
 export default api;
