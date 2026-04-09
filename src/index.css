@@ -1,0 +1,18 @@
+/* Estilos globales */
+/* Estilos para el input de búsqueda */
+.form-control:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+/* Estilos para el botón de cierre */
+.btn-close {
+  filter: brightness(0) saturate(100%) invert(83%) sepia(96%) saturate(900%) hue-rotate(0deg) brightness(300%) contrast(102%);
+}
+/* Estilos para el menú desplegable del usuario (Log out) */
+#user-dropdown + .dropdown-menu {
+  background-color: #111 !important;
+  border: 1px solid #ffc107;
+  box-shadow: none !important;
+  min-width: 150px;
+  padding: 5px 0;
+}
