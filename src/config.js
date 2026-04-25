@@ -8,6 +8,7 @@ export const MS_AUTH_URL = import.meta.env.VITE_MS_AUTH_URL || 'http://localhost
 export const MS_USER_URL = import.meta.env.VITE_MS_USER_URL || 'http://localhost:8002/usuarios';
 export const MS_PRODUCT_URL = import.meta.env.VITE_MS_PRODUCT_URL || 'http://localhost:8003/productos';
 export const MS_INVENTORY_URL = import.meta.env.VITE_MS_INVENTORY_URL || 'http://localhost:8004';
+export const MS_ORDER_URL = import.meta.env.VITE_MS_ORDER_URL || 'http://localhost:8005';
 
 // Configuracion de la aplicación
 export const APP_CONFIG = {
@@ -21,7 +22,8 @@ const config = {
   MS_AUTH_URL,
   MS_USER_URL,
   MS_PRODUCT_URL,
-  MS_INVENTORY_URL
+  MS_INVENTORY_URL,
+  MS_ORDER_URL  
 };
 
 export default config;

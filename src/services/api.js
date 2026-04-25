@@ -1,7 +1,7 @@
 // Servicio API - Cliente HTTP para consumir microservicios
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { MS_AUTH_URL, MS_USER_URL, MS_PRODUCT_URL, MS_INVENTORY_URL } from '../config';
+import { MS_AUTH_URL, MS_USER_URL, MS_PRODUCT_URL, MS_INVENTORY_URL, MS_ORDER_URL } from '../config';
 // Crear instancia de axios
 const api = axios.create({
   timeout: 120000,
@@ -152,6 +152,17 @@ export const inventoryService = {
 
   toggleActivo: (id) =>
     api.patch(`${MS_INVENTORY_URL}/inventory/${id}/toggle-activo`),
+};
+
+// ============================================================================
+// ORDERS SERVICE
+// ============================================================================
+export const ordersService = {
+  getOrders: (sede_id) =>
+    api.get(`${MS_ORDER_URL}/orders/`, { params: { sede_id } }),
+
+  createOrder: (data) =>
+    api.post(`${MS_ORDER_URL}/orders/`, data),
 };
 
 export default api;

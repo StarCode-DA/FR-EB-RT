@@ -29,6 +29,9 @@ function NavbarComponent() {
           {hasPermission('usuarios.manage') && (
             <Nav.Link as={Link} to="/users" className="text-white fw-semibold">Users</Nav.Link>
           )}
+          {hasPermission('orders.create') && (
+            <Nav.Link as={Link} to="/orders" className="text-white fw-semibold">Orders</Nav.Link>
+          )}
         </Nav>
         <Nav className="d-flex align-items-center">
           <NavDropdown
