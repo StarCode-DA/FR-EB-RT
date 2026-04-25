@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import NavbarComponent from './components/Navbar';
 import Users from './pages/Users'
 import Inventory from './pages/Inventory'
+import Orders from './pages/Orders'
 
 // Generar estrellas aleatorias para el fondo
 const stars = Array.from({ length: 100 }, (_, i) => ({
@@ -72,6 +73,17 @@ function App() {
                           </ProtectedRoute>
                         }
                       />
+
+                      {/* ORDERS */}
+                      <Route
+                        path='/orders'
+                        element={
+                          <ProtectedRoute requiredPermission="orders.create">
+                            <Orders />
+                          </ProtectedRoute>
+                        }
+                      />
+
                     </Routes>
                   </>
                 </PrivateRoute>
