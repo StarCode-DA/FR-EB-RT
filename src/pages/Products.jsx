@@ -37,8 +37,9 @@ export default function Products() {
     if (!form.categoria) return "Category is required";
     if (!form.costo || Number(form.costo) <= 0) return "Cost must be greater than 0";
     if (!form.precio || Number(form.precio) <= 0) return "Price must be greater than 0";
+    if (Number(form.precio) <= Number(form.costo)) return "Sale price must be greater than cost";
     return null;
-  };
+};
 
   const handleSubmit = async () => {
     const error = validar();
@@ -52,17 +53,21 @@ export default function Products() {
       price: Number(form.precio)
     };
 
-    if (editingId) {
-      await productService.updateProduct(editingId, data);
-    } else {
-      await productService.createProduct(data);
+    try {
+      if (editingId) {
+        await productService.updateProduct(editingId, data);
+      } else {
+        await productService.createProduct(data);
+      }
+      setForm({ nombre: "", unidad: "", categoria: "", costo: "", precio: "" });
+      setEditingId(null);
+      setShowModal(false);
+      loadProducts();
+    } catch (err) {
+      const detail = err.response?.data?.detail;
+      setErrorForm(typeof detail === "string" ? detail : "Error saving product");
     }
-
-    setForm({ nombre: "", unidad: "", categoria: "", costo: "", precio: "" });
-    setEditingId(null);
-    setShowModal(false);
-    loadProducts();
-  };
+};
 
   const handleEdit = (product) => {
     setErrorForm("");
