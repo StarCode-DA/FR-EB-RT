@@ -35,9 +35,11 @@ function Orders() {
   useEffect(() => { loadOrders(); }, [sedeSeleccionada]);
   useEffect(() => { setPaginaActual(1); }, [search, sedeSeleccionada]);
 
-  const filtrado = orders.filter((item) =>
-    item.status.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtrado = orders.filter((item) => {
+    const statusTraducido = item.status === "ABIERTO" ? "open" : "closed";
+    return statusTraducido.includes(search.toLowerCase());
+  });
+
   const totalPaginas = Math.ceil(filtrado.length / itemsPorPagina);
   const paginado = filtrado.slice(
     (paginaActual - 1) * itemsPorPagina,
@@ -169,13 +171,13 @@ function Orders() {
         <Modal.Body style={{ backgroundColor: "#111" }}>
           <p className="text-warning mb-3">
             Location: <strong>{sedeNombres[sedeSeleccionada]}</strong><br />
-            Created by: <strong>{rol} — {nombreUsuario}</strong>
+            Created by: <strong>{nombreUsuario}</strong>
           </p>
           <input
             className="form-control mb-3"
             placeholder="Client name"
             value={nombreCliente}
-            onChange={(e) => setNombreCliente(e.target.value)}
+            onChange={(e) => setNombreCliente(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ""))}
           />
           <input
             className="form-control mb-3"
