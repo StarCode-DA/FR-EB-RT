@@ -65,11 +65,11 @@ function Inventory() {
   );
   const validarCrear = () => {
     if (!form.product_id) return "Select a product";
-    if (form.stock === "" || Number(form.stock) < 0) return "Stock must be 0 or greater";
+    if (form.stock === "" || Number(form.stock) <= 0) return "Stock must be greater than 0";
     return null;
   };
   const validarEditar = () => {
-    if (stockForm.stock === "" || Number(stockForm.stock) < 0) return "Stock must be 0 or greater";
+    if (stockForm.stock === "" || Number(stockForm.stock) <= 0) return "Stock must be greater than 0";
     return null;
   };
   const handleCrear = async () => {
@@ -303,7 +303,7 @@ function Inventory() {
             className="form-control mb-3"
             placeholder="Initial stock"
             type="number"
-            min={0}
+            min={1}
             value={form.stock}
             onChange={(e) => setForm({ ...form, stock: e.target.value })}
           />
@@ -325,7 +325,7 @@ function Inventory() {
             className="form-control mb-3"
             placeholder="New stock"
             type="number"
-            min={0}
+            min={1}
             value={stockForm.stock}
             onChange={(e) => setStockForm({ stock: e.target.value })}
           />
