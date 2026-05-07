@@ -152,6 +152,9 @@ export const inventoryService = {
 
   toggleActivo: (id) =>
     api.patch(`${MS_INVENTORY_URL}/inventory/${id}/toggle-activo`),
+
+  getLowStock: (sede_id, threshold = 5) =>
+  api.get(`${MS_INVENTORY_URL}/inventory/low-stock`, { params: { sede_id, threshold } }),
 };
 
 // ============================================================================
