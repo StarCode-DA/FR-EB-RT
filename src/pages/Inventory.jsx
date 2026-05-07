@@ -32,6 +32,25 @@ function Inventory() {
     const res = await productService.getProducts();
     setProducts(res.data);
   };
+  const checkLowStock = async () => {
+    setLoadingLowStock(true);
+    try {
+      const res = await inventoryService.getLowStock(sedeSeleccionada);
+      setTotalReviewed(res.data.total_reviewed);  // ← agrega esta línea
+      setLowStock(res.data.items);
+      setShowLowStock(true);
+    } finally {
+      setLoadingLowStock(false);
+    }
+  };
+  const [lowStock, setLowStock] = useState([]);
+  const [showLowStock, setShowLowStock] = useState(false);
+  const [loadingLowStock, setLoadingLowStock] = useState(false);
+  const [totalReviewed, setTotalReviewed] = useState(0);
+
+  useEffect(() => {
+    setShowLowStock(false);
+  }, [sedeSeleccionada]);
 
   useEffect(() => {
     loadInventory();
@@ -124,16 +143,21 @@ function Inventory() {
           <h4 className="text-warning">
             Inventory — {sedeNombres[sedeSeleccionada]}
           </h4>
-          {(rol === "administrador" || rol === "cajero") && (
-            <Button variant="warning" onClick={() => {
-              setForm({ product_id: "", stock: "" });
-              setSearchProducto("");
-              setErrorForm("");
-              setShowModal(true);
-            }}>
-              + Add product
+          <div className="d-flex gap-2">
+            <Button variant="outline-danger" onClick={checkLowStock} disabled={loadingLowStock}>
+              {loadingLowStock ? "Checking..." : "⚠️ Low stock"}
             </Button>
-          )}
+            {(rol === "administrador" || rol === "cajero") && (
+              <Button variant="warning" onClick={() => {
+                setForm({ product_id: "", stock: "" });
+                setSearchProducto("");
+                setErrorForm("");
+                setShowModal(true);
+              }}>
+                + Add product
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Selector de sede — solo admin */}
@@ -151,7 +175,37 @@ function Inventory() {
             ))}
           </div>
         )}
-
+        {showLowStock && (
+          <div className="mb-3 p-3" style={{ border: "1px solid #dc3545", borderRadius: "6px", backgroundColor: "#1a0a0a" }}>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="text-danger fw-bold">
+                ⚠️ Low stock products ({lowStock.length})
+              </span>
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => setShowLowStock(false)}
+              >
+                ✕
+              </button>
+            </div>
+            {totalReviewed === 0 ? (
+              <p className="text-warning mb-0">⚠️ No products in inventory for this location</p>
+            ) : lowStock.length === 0 ? (
+              <p className="text-success mb-0">✅ All products have sufficient stock</p>
+            ) : (
+              <ul className="mb-0" style={{ color: "#ff6b6b" }}>
+                {lowStock.map((item) => {
+                  const product = products.find((p) => p.id === item.product_id);
+                  return (
+                    <li key={item.id}>
+                      {product?.name ?? `Product #${item.product_id}`} — Stock: <strong>{item.stock}</strong>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        )}
         {/* Búsqueda y filtrado por categoría */}
         <div className="d-flex gap-3 mb-3">
           <input
